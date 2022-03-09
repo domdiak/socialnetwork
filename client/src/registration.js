@@ -13,7 +13,7 @@ export class Registration extends Component {
         console.log("Registration mounted");
     }
     inputUpdate({ target }) {
-        console.log(target.value);
+        // console.log(target.value);
         this.setState(
             {
                 [target.name]: target.value,
@@ -25,7 +25,7 @@ export class Registration extends Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        fetch("user/resgiter.json", {
+        fetch("/register.json", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -34,7 +34,10 @@ export class Registration extends Component {
         })
             .then((resp) => resp.json())
             .then((resp) =>
-                console.log("resp from POST /user/resgiter.json", resp)
+                console.log("resp from POST /user/register.json", resp)
+            )
+            .catch((err) =>
+                console.log("Error in resp from POST /user/register.json", err)
             );
     }
     render() {
@@ -47,12 +50,12 @@ export class Registration extends Component {
                 ;
                 <form>
                     <input
-                        name="firstName"
+                        name="first"
                         type="text"
                         onChange={this.inputUpdate}
                     />
                     <input
-                        name="lastName"
+                        name="last"
                         type="text"
                         onChange={this.inputUpdate}
                     />
