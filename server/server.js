@@ -33,12 +33,21 @@ app.post("/register.json", (req, res) => {
                 ({ rows }) => {
                     req.session.userId = rows[0].id;
                     console.log("Cookies on /register.json", req.session);
+                    res.json({ success: true });
                 }
             );
         })
         .catch((err) => {
             console.log("Error in hash.password function", err);
+            res.json({ success: false });
         });
+});
+
+app.get("/user/id.json", function (req, res) {
+    res.json({
+        userId: req.session.userId,
+    });
+    console.log("userId", req.session.userId);
 });
 
 app.get("*", function (req, res) {

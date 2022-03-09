@@ -32,12 +32,24 @@ export class Registration extends Component {
             },
             body: JSON.stringify(this.state),
         })
-            .then((resp) => resp.json())
-            .then((resp) =>
-                console.log("resp from POST /user/register.json", resp)
-            )
+            .then((resp) => {
+                // console.log("resp", resp);
+                return resp.json();
+            })
+            .then((data) => {
+                // ** Why am I not seeing this in the console???
+                console.log("resp from POST /register.json", data);
+                if (data.success) {
+                    location.reload();
+                } else {
+                    this.setState({
+                        error: "Error, try again",
+                    });
+                }
+            })
+            .catch((err) => console.log("Error when POST /register.json:", err))
             .catch((err) =>
-                console.log("Error in resp from POST /user/register.json", err)
+                console.log("Error in resp from POST register.json", err)
             );
     }
     render() {
