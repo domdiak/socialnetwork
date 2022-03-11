@@ -1,8 +1,9 @@
 import { Component } from "react";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
-export class Registration extends Component {
+export class Login extends Component {
     constructor() {
         super();
         this.state = {
@@ -12,7 +13,7 @@ export class Registration extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount() {
-        console.log("Registration mounted");
+        console.log("Login mounted");
     }
     inputUpdate({ target }) {
         // console.log(target.value);
@@ -27,7 +28,7 @@ export class Registration extends Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        fetch("/register.json", {
+        fetch("/login.json", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -39,41 +40,29 @@ export class Registration extends Component {
                 return resp.json();
             })
             .then((data) => {
-                // ** Why am I not seeing this in the console???
-                console.log("resp from POST /register.json", data);
+                console.log("resp from POST /login.json", data);
                 if (data.success) {
                     location.reload();
                 } else {
                     this.setState({
-                        error: "Error, try again",
+                        error: "Wrong password or user doesn't exist",
                     });
                 }
             })
-            .catch((err) => console.log("Error when POST /register.json:", err))
+            .catch((err) => console.log("Error when POST /login.json:", err))
             .catch((err) =>
-                console.log("Error in resp from POST register.json", err)
+                console.log("Error in resp from POST login.json", err)
             );
     }
+
     render() {
         return (
             <>
-                <h1> Registration </h1>
+                <h1> Login! </h1>
                 {this.state.error && (
                     <h2> Something went wrong: {this.state.error} </h2>
                 )}
                 <form>
-                    <input
-                        name="first"
-                        type="text"
-                        placeholder="Type first name"
-                        onChange={this.inputUpdate}
-                    />
-                    <input
-                        name="last"
-                        type="text"
-                        placeholder="Type last name"
-                        onChange={this.inputUpdate}
-                    />
                     <input
                         name="email"
                         type="text"
@@ -88,10 +77,10 @@ export class Registration extends Component {
                     />
                     <Button variant="contained" onClick={this.handleSubmit}>
                         {" "}
-                        Register{" "}
+                        Login{" "}
                     </Button>
                 </form>
-                <Link to="/login">Click here to Log in!</Link>
+                <Link to="/reset">Forgot your password?</Link>
             </>
         );
     }

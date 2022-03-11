@@ -12,3 +12,54 @@ module.exports.registerUser = (first, last, email, password) => {
     `;
     return db.query(sqlAddSignature, [first, last, email, password]);
 };
+
+module.exports.getPassword = (email) => {
+    const sqlPassword = `
+    SELECT password, id 
+    FROM users 
+    WHERE (email = $1)
+    `;
+    return db.query(sqlPassword, [email]);
+};
+
+module.exports.checkIfExists = (email) => {
+    const sqlCheckIfExists = `
+    SELECT email 
+    FROM users 
+    WHERE (email = $1)
+    `;
+    return db.query(sqlCheckIfExists, [email]);
+};
+
+module.exports.addResetCode = (email, code) => {
+    const sqlStoreResetCode = `
+    INSERT INTO reset_codes (email, code)
+    VALUES ($1, $2)
+    RETURNING *
+    `;
+    return db.query(sqlStoreResetCode, [email, code]);
+};
+
+module.exports.verifyResetCode = (email, code) => {
+    const sqlVerifyResetCode = `
+    SELECT code 
+    FROM reset_codes
+    WHERE email = $1
+    AND code = $2
+    AND timestamp - timestamp < INTERVAL '10 minutes'
+    ORDER BY timestamp ASC 
+    LIMIT 1;
+    `;
+    return db.query(sqlVerifyResetCode, [email, code]);
+};
+
+module.exports.updatePassword = (email, password) => {
+    const sqlUpdatePassword = `
+    UPDATE users
+    SET password = $2
+    WHERE email = $1
+    RETURNING *;
+    `;
+    // Error: bind message supplies 2 parameters, but prepared statement "" requires 1
+    return db.query(sqlUpdatePassword, [email, password]);
+};
