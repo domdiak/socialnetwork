@@ -80,7 +80,7 @@ export class Reset extends Component {
                     });
                 } else {
                     this.setState({
-                        error: "Something went wrong. Try again.",
+                        error: "Something went wrong. The code expire or doesn't exist.",
                     });
                 }
             })
@@ -115,6 +115,9 @@ export class Reset extends Component {
         } else if (this.state.view === 2) {
             return (
                 <>
+                    {this.state.error && (
+                        <h2> Something went wrong: {this.state.error} </h2>
+                    )}
                     <form>
                         <input
                             name="code"

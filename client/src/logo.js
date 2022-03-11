@@ -10,16 +10,15 @@ export default function Logo() {
                 data.userId = null;
                 console.log("User logged out, cookies:", data.userId);
             });
-        ReactDOM.render(<Welcome />, document.querySelector("main"));
     }
 
     return (
         <>
-            <h1> Logo</h1>
-            <Button variant="contained" onClick={logout}>
+            <img src="./logo.jpg" />
+            {/* <Button variant="contained" onClick={logout}>
                 {" "}
                 Logout
-            </Button>
+            </Button> */}
         </>
     );
 }

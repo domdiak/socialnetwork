@@ -1,7 +1,9 @@
-export function ProfilePic({ url, first, last }) {
+export function ProfilePic({ url, first, last, showUploader }) {
+    url = url || "./defaultPic.jpeg";
+
     return (
-        <div id={"profile-pic"}>
-            <img src={url} alt={`${first} ${last}`} />
+        <div id={"profile-pic"} onClick={showUploader}>
+            <img alt={`${first} ${last}`} src={url} />
         </div>
     );
 }

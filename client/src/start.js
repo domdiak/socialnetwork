@@ -7,7 +7,7 @@ fetch("/user/id.json")
     .then((data) => {
         console.log("data.userId", data.userId);
         // Manually resetting UserId
-        data.userId = null;
+        // data.userId = null;
         if (!data.userId) {
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {

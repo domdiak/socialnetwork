@@ -92,7 +92,7 @@ app.post("/password/reset/start", (req, res) => {
                 db.addResetCode(email, secretCode)
                     .then(({ rows }) => {
                         const subject = "Reset code";
-                        console.log("Rows in addResetCode", rows);
+                        // console.log("Rows in addResetCode", rows);
                         sendEmail(rows[0].email, rows[0].code, subject)
                             .then(res.json({ success: true }))
                             .catch((err) => {
@@ -116,18 +116,19 @@ app.post("/password/reset/verify", (req, res) => {
             if (rows.length === 0) {
                 res.json({ success: false });
             } else {
-                console.log("Rows in verifyResetCode:", rows);
-                console.log("newPassword", password);
+                // console.log("Rows in verifyResetCode:", rows);
+                // console.log("newPassword", password);
                 hash(password)
                     .then((hashedPassword) => {
                         db.updatePassword(email, hashedPassword)
                             .then(({ rows }) => {
-                                console.log("Rows in updatePassword", rows);
+                                // console.log("Rows in updatePassword", rows);
                                 res.json({ success: true });
                             })
-                            .catch((err) =>
-                                console.log("Error in updatePassword", err)
-                            );
+                            .catch((err) => {
+                                console.log("Error in updatePassword", err);
+                                res.json({ success: false });
+                            });
                     })
                     .catch((err) => console.log("Error in hashPassword", err));
             }
@@ -140,6 +141,20 @@ app.get("/user/id.json", function (req, res) {
     res.json({
         userId: req.session.userId,
     });
+});
+
+// GET request to fetch userData on mounting app.js
+app.get("/user/data.json", function (req, res) {
+    console.log("UserId in GET /user/data.json", req.session.userId);
+    const { userId } = req.session;
+    db.getUserInfo(userId)
+        .then(({ rows }) => {
+            // console.log("Rows in getUserInfo", rows);
+            return res.json(rows[0]);
+        })
+        .catch((err) => {
+            console.log("Error in getUserInfo", err);
+        });
 });
 
 app.get("*", function (req, res) {

@@ -63,3 +63,12 @@ module.exports.updatePassword = (email, password) => {
     // Error: bind message supplies 2 parameters, but prepared statement "" requires 1
     return db.query(sqlUpdatePassword, [email, password]);
 };
+
+module.exports.getUserInfo = (userId) => {
+    const sqlGetUserInfo = `
+    SELECT first, last, profilepic 
+    FROM users 
+    WHERE id = $1;
+    `;
+    return db.query(sqlGetUserInfo, [userId]);
+};
