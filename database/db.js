@@ -72,3 +72,13 @@ module.exports.getUserInfo = (userId) => {
     `;
     return db.query(sqlGetUserInfo, [userId]);
 };
+
+module.exports.updateProfilePic = (profilepic, userId) => {
+    const sqlUpdateProfilePic = `
+    UPDATE users
+    SET profilepic = $1
+    WHERE id = $2
+    RETURNING *;
+    `;
+    return db.query(sqlUpdateProfilePic, [profilepic, userId]);
+};

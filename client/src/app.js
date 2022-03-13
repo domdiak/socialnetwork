@@ -35,13 +35,13 @@ export class App extends Component {
         this.setState({ uploaderVisible: true });
     }
     hideUploader() {
-        // ...
+        this.setState({ uploaderVisible: false });
     }
     // You could make a toggleUploader method that handles both hiding
     // and showing
 
     updateProfilePic(newProfilePicUrl) {
-        // ...
+        this.setState({ profilePic: newProfilePicUrl });
     }
 
     render() {

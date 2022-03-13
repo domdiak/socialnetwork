@@ -3,6 +3,7 @@ const app = express();
 const compression = require("compression");
 const path = require("path");
 const db = require("../database/db.js");
+const s3 = require("./s3");
 // Middleware required for hasing passwords
 const { hash, compare } = require("./bycrypt.js");
 
@@ -15,6 +16,28 @@ const cookieSession = require("cookie-session");
 const cryptoRandomString = require("crypto-random-string");
 const secretCode = cryptoRandomString({
     length: 6,
+});
+
+// Multer middlewar ------------------------------------
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, path.join(__dirname, "uploads"));
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then((uid) => {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    },
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152,
+    },
 });
 
 app.use(
@@ -66,8 +89,9 @@ app.post("/login.json", (req, res) => {
                     .then((match) => {
                         if (match) {
                             console.log("Successful login.");
-                            console.log("Cookies on Login", req.session);
                             req.session.userId = rows[0].id;
+                            console.log("Cookies on Login", req.session);
+                            res.json({ success: true });
                         }
                     })
                     .catch((err) =>
@@ -136,6 +160,26 @@ app.post("/password/reset/verify", (req, res) => {
         .catch((err) => console.log("Error in verifyResetCode", err));
 });
 
+// Route for uploading images
+
+app.post("/upload/profile", uploader.single("file"), s3.upload, (req, res) => {
+    console.log("/upload got hit");
+    console.log("req.file:", req.file);
+    const { userId } = req.session;
+    console.log("userId", userId);
+    db.updateProfilePic(
+        `https://s3.amazonaws.com/socialnetworkdominik/${req.file.filename}`,
+        userId
+    )
+        .then((data) => {
+            // console.log(data);
+            return res.json(data.rows[0]);
+        })
+        .catch((err) => {
+            console.log("Error in updateProfilePic", err);
+        });
+});
+
 // It keeps resetting userId to the last user that logged in
 app.get("/user/id.json", function (req, res) {
     res.json({
@@ -145,7 +189,7 @@ app.get("/user/id.json", function (req, res) {
 
 // GET request to fetch userData on mounting app.js
 app.get("/user/data.json", function (req, res) {
-    console.log("UserId in GET /user/data.json", req.session.userId);
+    // console.log("UserId in GET /user/data.json", req.session.userId);
     const { userId } = req.session;
     db.getUserInfo(userId)
         .then(({ rows }) => {
@@ -155,6 +199,11 @@ app.get("/user/data.json", function (req, res) {
         .catch((err) => {
             console.log("Error in getUserInfo", err);
         });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.userId = null;
+    res.redirect("/");
 });
 
 app.get("*", function (req, res) {

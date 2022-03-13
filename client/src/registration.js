@@ -1,6 +1,8 @@
 import { Component } from "react";
-import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 
 export class Registration extends Component {
     constructor() {
@@ -61,37 +63,45 @@ export class Registration extends Component {
                 {this.state.error && (
                     <h2> Something went wrong: {this.state.error} </h2>
                 )}
-                <form>
-                    <input
-                        name="first"
-                        type="text"
-                        placeholder="Type first name"
-                        onChange={this.inputUpdate}
-                    />
-                    <input
-                        name="last"
-                        type="text"
-                        placeholder="Type last name"
-                        onChange={this.inputUpdate}
-                    />
-                    <input
-                        name="email"
-                        type="text"
-                        placeholder="Type email"
-                        onChange={this.inputUpdate}
-                    />
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="Type password"
-                        onChange={this.inputUpdate}
-                    />
-                    <Button variant="contained" onClick={this.handleSubmit}>
-                        {" "}
-                        Register{" "}
-                    </Button>
-                </form>
-                <Link to="/login">Click here to Log in!</Link>
+                <Container maxWidth="sm">
+                    <form>
+                        <Grid container spacing={5}></Grid>
+                        <Grid container spacing={5}></Grid>
+                        <Grid container spacing={5}></Grid>
+                        <Grid container spacing={5}></Grid>
+                        <Grid container spacing={5}></Grid>
+                        <Grid container spacing={5}></Grid>
+                        <input
+                            name="first"
+                            type="text"
+                            placeholder="Type first name"
+                            onChange={this.inputUpdate}
+                        />
+                        <input
+                            name="last"
+                            type="text"
+                            placeholder="Type last name"
+                            onChange={this.inputUpdate}
+                        />
+                        <input
+                            name="email"
+                            type="text"
+                            placeholder="Type email"
+                            onChange={this.inputUpdate}
+                        />
+                        <input
+                            name="password"
+                            type="password"
+                            placeholder="Type password"
+                            onChange={this.inputUpdate}
+                        />
+                        <Button variant="contained" onClick={this.handleSubmit}>
+                            {" "}
+                            Register{" "}
+                        </Button>
+                    </form>
+                    <Link to="/login">Click here to Log in!</Link>
+                </Container>
             </>
         );
     }
