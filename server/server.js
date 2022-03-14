@@ -160,6 +160,24 @@ app.post("/password/reset/verify", (req, res) => {
         .catch((err) => console.log("Error in verifyResetCode", err));
 });
 
+// Route for adding bio
+
+app.post("/submit.json", (req, res) => {
+    console.log("SaveBio got hit");
+    const { userId } = req.session;
+    const { bio } = req.body;
+    console.log("bio", bio);
+    db.setBio(bio, userId)
+        .then(({ rows }) => {
+            console.log("Rows in setBio", rows);
+            res.json({ success: true });
+        })
+        .catch((err) => {
+            console.log("Error in setBio", err);
+            res.json({ success: false });
+        });
+});
+
 // Route for uploading images
 
 app.post("/upload/profile", uploader.single("file"), s3.upload, (req, res) => {

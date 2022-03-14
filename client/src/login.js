@@ -1,6 +1,15 @@
 import { Component } from "react";
-import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import {
+    Typography,
+    Box,
+    TextField,
+    Grid,
+    Container,
+    Button,
+    Paper,
+    Avatar,
+} from "@mui/material";
 import { BrowserRouter, Route } from "react-router-dom";
 
 export class Login extends Component {
@@ -58,29 +67,77 @@ export class Login extends Component {
     render() {
         return (
             <>
-                <h1> Login! </h1>
                 {this.state.error && (
                     <h2> Something went wrong: {this.state.error} </h2>
                 )}
-                <form>
-                    <input
-                        name="email"
-                        type="text"
-                        placeholder="Type email"
-                        onChange={this.inputUpdate}
-                    />
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="Type password"
-                        onChange={this.inputUpdate}
-                    />
-                    <Button variant="contained" onClick={this.handleSubmit}>
-                        {" "}
-                        Login{" "}
-                    </Button>
-                </form>
-                <Link to="/reset">Forgot your password?</Link>
+                <Grid>
+                    <Paper
+                        elevation={10}
+                        sx={{
+                            p: 2,
+                            height: "70vh",
+                            width: 280,
+                            margin: "20px auto",
+                        }}
+                    >
+                        <Grid align="center">
+                            <Avatar></Avatar>
+                            <Typography
+                                variant="h4"
+                                component="h4"
+                                sx={{ p: 2, fontWeight: "bold" }}
+                            >
+                                Login
+                            </Typography>
+                        </Grid>
+                        <TextField
+                            label="Email"
+                            placeholder="Enter your email"
+                            name="email"
+                            type="text"
+                            sx={{ margin: "8px 0" }}
+                            onChange={this.inputUpdate}
+                            fullWidth
+                        ></TextField>
+                        <TextField
+                            label="Password"
+                            placeholder="Enter password"
+                            name="password"
+                            type="password"
+                            sx={{ margin: "8px 0" }}
+                            onChange={this.inputUpdate}
+                            fullWidth
+                        ></TextField>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            sx={{ margin: "8px 0" }}
+                            onClick={this.handleSubmit}
+                        >
+                            {" "}
+                            Login
+                        </Button>
+                        <Typography sx={{ margin: "8px 0" }}>
+                            <Link to="/reset">Forgot your password?</Link>
+                        </Typography>
+                        <Typography>
+                            {" "}
+                            No account?
+                            <Link href="#"> Sign up here</Link>
+                        </Typography>
+                    </Paper>
+                </Grid>
+
+                <Box
+                    component="form"
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                ></Box>
             </>
         );
     }

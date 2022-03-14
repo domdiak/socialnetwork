@@ -1,2 +1,8 @@
 reset.js: 
 --> clearing fields if an error occurred 
+
+Cosmetic changes:
+--> Form validation: 
+    --> Displaying error messages
+    --> Making some fields required 
+    --> Disabling Upload button unless a file has been ploaded 

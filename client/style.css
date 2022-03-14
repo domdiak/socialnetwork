@@ -7,9 +7,17 @@
 
 body {
     background-color: ghostwhite;
+    position: relative;
 }
 
-img {
-    height: 200px;
-    width: 200px;
+#uploader {
+    position: absolute;
+    top: 120px;
+    left: 0;
+}
+
+.profile {
+    position: absolute;
+    top: 150px;
+    left: 0;
 }

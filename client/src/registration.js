@@ -1,8 +1,13 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
+import {
+    Typography,
+    Box,
+    TextField,
+    Grid,
+    Container,
+    Button,
+} from "@mui/material";
 
 export class Registration extends Component {
     constructor() {
@@ -59,49 +64,68 @@ export class Registration extends Component {
     render() {
         return (
             <>
-                <h1> Registration </h1>
                 {this.state.error && (
                     <h2> Something went wrong: {this.state.error} </h2>
                 )}
-                <Container maxWidth="sm">
-                    <form>
-                        <Grid container spacing={5}></Grid>
-                        <Grid container spacing={5}></Grid>
-                        <Grid container spacing={5}></Grid>
-                        <Grid container spacing={5}></Grid>
-                        <Grid container spacing={5}></Grid>
-                        <Grid container spacing={5}></Grid>
-                        <input
+                <Grid
+                    container
+                    spacing={5}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ minHeight: "100vh" }}
+                >
+                    <Typography variant="h3" component="h3" align="left">
+                        Registration
+                    </Typography>
+                    <Box component="form" sx={{ width: "50%", px: 4 }}>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            variant="outlined"
                             name="first"
                             type="text"
-                            placeholder="Type first name"
+                            label="Type first name"
                             onChange={this.inputUpdate}
                         />
-                        <input
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            variant="outlined"
                             name="last"
                             type="text"
-                            placeholder="Type last name"
+                            label="Type last name"
                             onChange={this.inputUpdate}
                         />
-                        <input
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            variant="outlined"
                             name="email"
                             type="text"
-                            placeholder="Type email"
+                            label="Type email"
                             onChange={this.inputUpdate}
                         />
-                        <input
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            variant="outlined"
                             name="password"
                             type="password"
-                            placeholder="Type password"
+                            label="Type password"
                             onChange={this.inputUpdate}
                         />
-                        <Button variant="contained" onClick={this.handleSubmit}>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={this.handleSubmit}
+                        >
                             {" "}
                             Register{" "}
                         </Button>
-                    </form>
-                    <Link to="/login">Click here to Log in!</Link>
-                </Container>
+                        <Link to="/login">Click here to Log in!</Link>
+                    </Box>
+                </Grid>
             </>
         );
     }

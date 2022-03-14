@@ -66,7 +66,7 @@ module.exports.updatePassword = (email, password) => {
 
 module.exports.getUserInfo = (userId) => {
     const sqlGetUserInfo = `
-    SELECT first, last, profilepic 
+    SELECT first, last, profilepic AS "profilePic", bio
     FROM users 
     WHERE id = $1;
     `;
@@ -81,4 +81,14 @@ module.exports.updateProfilePic = (profilepic, userId) => {
     RETURNING *;
     `;
     return db.query(sqlUpdateProfilePic, [profilepic, userId]);
+};
+
+module.exports.setBio = (bio, userId) => {
+    const sqlSetBio = `
+    UPDATE users
+    SET bio = $1
+    WHERE id = $2
+    RETURNING *;
+    `;
+    return db.query(sqlSetBio, [bio, userId]);
 };

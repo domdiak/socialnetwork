@@ -1,17 +1,21 @@
 import { Component } from "react";
-import { ProfilePic } from "./profile-pic";
 import Logo from "./logo";
 import { Uploader } from "./uploader.js";
+import { Profile } from "./profile.js";
+import { ProfilePic } from "./profile-pic";
+import { BioEditor } from "./bio-editor.js";
+import { AppBar, Toolbar, Typography, Avatar } from "@mui/material";
 
 export class App extends Component {
     constructor() {
         super();
 
         this.state = {
-            firstName: "",
-            lastName: "",
+            first: "",
+            last: "",
             email: "",
             profilePic: undefined,
+            bio: "",
             uploaderVisible: false,
         };
 
@@ -37,25 +41,43 @@ export class App extends Component {
     hideUploader() {
         this.setState({ uploaderVisible: false });
     }
-    // You could make a toggleUploader method that handles both hiding
-    // and showing
 
     updateProfilePic(newProfilePicUrl) {
         this.setState({ profilePic: newProfilePicUrl });
     }
 
+    setBio(addedBio) {
+        this.setState({ bio: addedBio });
+    }
+
     render() {
-        const { profilePic, first, last } = this.props;
+        // const { profilePic, first, last } = this.props;
 
         return (
             <div id={"app"}>
-                <Logo />
-                <ProfilePic
-                    url={this.state.profilePic}
-                    firstName={this.state.firstName}
-                    lastName={this.state.lastName}
+                <AppBar elevation={0}>
+                    <Toolbar sx={{ height: "10vh" }}>
+                        <Logo />
+                        <ProfilePic
+                            url={this.state.profilePic}
+                            firstName={this.state.first}
+                            lastName={this.state.last}
+                            showUploader={this.showUploader}
+                        />
+                    </Toolbar>
+                </AppBar>
+                <Profile
+                    id={this.state.id}
+                    first={this.state.first}
+                    last={this.state.last}
+                    profilePic={this.state.profilePic}
                     showUploader={this.showUploader}
-                />
+                    bio={this.state.bio}
+                    setBio={this.setBio}
+                >
+                    <ProfilePic></ProfilePic>
+                    <BioEditor> </BioEditor>
+                </Profile>
                 {this.state.uploaderVisible && (
                     <Uploader
                         hideUploader={this.hideUploader}

@@ -1,4 +1,6 @@
 import { Component } from "react";
+import { Box, TextField, Grid, Button, Paper } from "@mui/material";
+// import CloseIcon from "@mui/icons-material";
 
 export class Uploader extends Component {
     constructor(props) {
@@ -47,17 +49,48 @@ export class Uploader extends Component {
 
     render() {
         return (
-            <div id={"uploader"}>
-                <form onSubmit={this.handleSubmit}>
-                    <input
-                        name="profilePic"
-                        type={"file"}
-                        onChange={this.handleChange}
-                    />
-                    <button>Upload</button>
-                </form>
-                <p onClick={this.props.hideUploader}> X </p>
-            </div>
+            <Grid>
+                <Paper
+                    elevation={5}
+                    sx={{
+                        p: 2,
+                        height: "70vh",
+                        width: "50vw",
+                        margin: "10vh auto",
+                    }}
+                >
+                    <Grid align="center">
+                        <Box
+                            component="img"
+                            src={"./defaultPic.jpeg"}
+                            sx={{ maxWidth: "50%", borderRadius: "50%" }}
+                        ></Box>
+                        <Box
+                            component="form"
+                            onSubmit={this.handleSubmit}
+                            sx={{ width: "50%", px: 4 }}
+                        >
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                sx={{ margin: "8px 0" }}
+                                onClick={this.handleSubmit}
+                            >
+                                {" "}
+                                Upload
+                            </Button>
+                            <TextField
+                                name="profilePic"
+                                type={"file"}
+                                onChange={this.handleChange}
+                            ></TextField>
+                        </Box>
+                    </Grid>
+                    <p onClick={this.props.hideUploader}> X </p>
+                </Paper>
+            </Grid>
         );
     }
 }
