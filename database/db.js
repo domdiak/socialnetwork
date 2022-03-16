@@ -92,3 +92,24 @@ module.exports.setBio = (bio, userId) => {
     `;
     return db.query(sqlSetBio, [bio, userId]);
 };
+
+module.exports.searchUsers = (searchTerm) => {
+    const sqlSearchUsers = `
+    SELECT id, first, last, profilepic 
+    FROM users 
+    WHERE first ILIKE $1
+    ORDER BY id DESC
+    LIMIT 3;
+    `;
+    return db.query(sqlSearchUsers, [searchTerm + "%"]);
+};
+
+module.exports.searchRecentUsers = () => {
+    const sqlSearchRecentUsers = `
+    SELECT id, first, last, profilepic
+    FROM users
+    ORDER BY id DESC
+    LIMIT 3
+    `;
+    return db.query(sqlSearchRecentUsers);
+};

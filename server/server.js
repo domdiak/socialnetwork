@@ -219,9 +219,46 @@ app.get("/user/data.json", function (req, res) {
         });
 });
 
+// GET request to search users
+
+app.get("/users/search", (req, res) => {
+    // console.log("Search got hit");
+    if (req.query.searchterm === "") {
+        db.searchRecentUsers()
+            .then(({ rows }) => {
+                return res.json(rows);
+            })
+            .catch((err) => {
+                console.log("Error in GET searchRecentUsers", err);
+            });
+    } else {
+        db.searchUsers(req.query.searchterm)
+            .then(({ rows }) => {
+                return res.json(rows);
+            })
+            .catch((err) => {
+                console.log("Error in GET searchUsers", err);
+            });
+    }
+});
+
+// GET request to show OtherProfile
+
+app.get("/user/:id.json", (req, res) => {
+    const { id } = req.params;
+    db.getUserInfo(id)
+        .then(({ rows }) => {
+            // console.log("Response", rows[0]);
+            return res.json(rows[0]);
+        })
+        .catch((err) => {
+            console.log("Error in getUserInfo", err);
+        });
+});
+
 app.get("/logout", (req, res) => {
     req.session.userId = null;
-    res.redirect("/");
+    res.redirect("//users/search", (req, res));
 });
 
 app.get("*", function (req, res) {

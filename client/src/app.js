@@ -3,8 +3,12 @@ import Logo from "./logo";
 import { Uploader } from "./uploader.js";
 import { Profile } from "./profile.js";
 import { ProfilePic } from "./profile-pic";
+import { FindPeople } from "./find-people";
 import { BioEditor } from "./bio-editor.js";
-import { AppBar, Toolbar, Typography, Avatar } from "@mui/material";
+import { OtherProfile } from "./other-profile.js";
+import { AppBar, Toolbar } from "@mui/material";
+// import { useParams, useHistory } from "react-router";
+import { Route, BrowserRouter } from "react-router-dom";
 
 export class App extends Component {
     constructor() {
@@ -54,37 +58,47 @@ export class App extends Component {
         // const { profilePic, first, last } = this.props;
 
         return (
-            <div id={"app"}>
-                <AppBar elevation={0}>
-                    <Toolbar sx={{ height: "10vh" }}>
-                        <Logo />
-                        <ProfilePic
-                            url={this.state.profilePic}
-                            firstName={this.state.first}
-                            lastName={this.state.last}
+            <>
+                <BrowserRouter>
+                    <AppBar elevation={0}>
+                        <Toolbar sx={{ height: "10vh" }}>
+                            <Logo />
+                            <ProfilePic
+                                url={this.state.profilePic}
+                                firstName={this.state.first}
+                                lastName={this.state.last}
+                                showUploader={this.showUploader}
+                            />
+                        </Toolbar>
+                    </AppBar>
+                    <Route exact path="/">
+                        <Profile
+                            id={this.state.id}
+                            first={this.state.first}
+                            last={this.state.last}
+                            profilePic={this.state.profilePic}
                             showUploader={this.showUploader}
+                            bio={this.state.bio}
+                            setBio={this.setBio}
+                        >
+                            <ProfilePic></ProfilePic>
+                            <BioEditor> </BioEditor>
+                        </Profile>
+                    </Route>
+                    {this.state.uploaderVisible && (
+                        <Uploader
+                            hideUploader={this.hideUploader}
+                            updateProfilePic={this.updateProfilePic}
                         />
-                    </Toolbar>
-                </AppBar>
-                <Profile
-                    id={this.state.id}
-                    first={this.state.first}
-                    last={this.state.last}
-                    profilePic={this.state.profilePic}
-                    showUploader={this.showUploader}
-                    bio={this.state.bio}
-                    setBio={this.setBio}
-                >
-                    <ProfilePic></ProfilePic>
-                    <BioEditor> </BioEditor>
-                </Profile>
-                {this.state.uploaderVisible && (
-                    <Uploader
-                        hideUploader={this.hideUploader}
-                        updateProfilePic={this.updateProfilePic}
-                    />
-                )}
-            </div>
+                    )}
+                    <Route path="/find">
+                        <FindPeople> </FindPeople>
+                    </Route>
+                    <Route path="/user/:otherUserId">
+                        <OtherProfile />
+                    </Route>
+                </BrowserRouter>
+            </>
         );
     }
 }
