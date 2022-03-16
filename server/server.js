@@ -246,10 +246,17 @@ app.get("/users/search", (req, res) => {
 
 app.get("/user/:id.json", (req, res) => {
     const { id } = req.params;
+    const { userId } = req.session;
     db.getUserInfo(id)
         .then(({ rows }) => {
             // console.log("Response", rows[0]);
-            return res.json(rows[0]);
+            if (userId === rows[0].id) {
+                return res.json({ ownProfile: true });
+            } else if (rows[0] === 0) {
+                return res.json({ success: false });
+            } else {
+                return res.json(rows[0]);
+            }
         })
         .catch((err) => {
             console.log("Error in getUserInfo", err);

@@ -66,7 +66,7 @@ module.exports.updatePassword = (email, password) => {
 
 module.exports.getUserInfo = (userId) => {
     const sqlGetUserInfo = `
-    SELECT first, last, profilepic AS "profilePic", bio
+    SELECT id, first, last, profilepic AS "profilePic", bio
     FROM users 
     WHERE id = $1;
     `;

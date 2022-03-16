@@ -61,7 +61,7 @@ export class App extends Component {
             <>
                 <BrowserRouter>
                     <AppBar elevation={0}>
-                        <Toolbar sx={{ height: "10vh" }}>
+                        <Toolbar sx={{ height: "15vh" }}>
                             <Logo />
                             <ProfilePic
                                 url={this.state.profilePic}

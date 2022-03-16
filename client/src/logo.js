@@ -9,7 +9,7 @@ export default function Logo() {
 
     return (
         <>
-            <img style={imgStyle} src="./bread.jpeg" />
+            <img style={imgStyle} src="./logosn.jpg" />
         </>
     );
 }
