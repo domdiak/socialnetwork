@@ -9,6 +9,7 @@ import {
     Grid,
     Paper,
     Box,
+    Button,
 } from "@mui/material";
 
 export class Profile extends Component {
@@ -20,34 +21,77 @@ export class Profile extends Component {
     render() {
         return (
             <>
-                <Grid container sx={{ marginTop: "200px", height: "50%" }}>
-                    <Grid item xs={3}>
-                        <Box sx={{ height: "50%" }}>
-                            <ProfilePic
-                                url={this.props.profilePic}
-                                showUploader={this.props.showUploader}
+                <Box sx={{ paddingTop: "15vh" }}>
+                    <Grid
+                        container
+                        sx={{
+                            height: "70vh",
+                            bgcolor: "lightblue",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Grid
+                            item
+                            xs={3}
+                            sx={{
+                                border: "solid 2px",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    textAlign: "center",
+                                    padding: "20px",
+                                    margin: "10px",
+                                }}
                             >
-                                {" "}
-                            </ProfilePic>
-                            <p>
-                                {" "}
-                                First name: {this.props.first} Last name:{" "}
-                                {this.props.last}{" "}
-                            </p>
-                        </Box>
+                                <ProfilePic
+                                    url={this.props.profilePic}
+                                    showUploader={this.props.showUploader}
+                                >
+                                    {" "}
+                                </ProfilePic>
+                                <Button
+                                    variant="contained"
+                                    sx={{ margin: "10px" }}
+                                >
+                                    {" "}
+                                    Search Friends{" "}
+                                </Button>
+                                <Button variant="contained">
+                                    {" "}
+                                    [Placeholder]{" "}
+                                </Button>
+                            </Box>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={3}
+                            sx={{ border: "solid 2px" }}
+                            container
+                        >
+                            <Grid item sx={{ height: "20%" }}>
+                                <Typography
+                                    variant="h4"
+                                    sx={{ padding: "5px", margin: "5px" }}
+                                >
+                                    {" "}
+                                    {this.props.first} {this.props.last}{" "}
+                                </Typography>
+                            </Grid>
+                            <Grid item sx={{ height: "80%" }}>
+                                <BioEditor
+                                    bio={this.props.bio}
+                                    setBio={this.props.setBio}
+                                >
+                                    {" "}
+                                </BioEditor>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={4} sx={{ border: "solid 2px" }}>
+                            <Typography variant="h4"> Friends:</Typography>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={3}>
-                        <Paper>
-                            <BioEditor
-                                bio={this.props.bio}
-                                setBio={this.props.setBio}
-                            >
-                                {" "}
-                            </BioEditor>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3}></Grid>
-                </Grid>
+                </Box>
             </>
         );
     }

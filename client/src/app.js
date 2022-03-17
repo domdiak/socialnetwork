@@ -6,7 +6,7 @@ import { ProfilePic } from "./profile-pic";
 import { FindPeople } from "./find-people";
 import { BioEditor } from "./bio-editor.js";
 import { OtherProfile } from "./other-profile.js";
-import { AppBar, Toolbar } from "@mui/material";
+import { AppBar, Toolbar, Avatar, Button, Grid, Box } from "@mui/material";
 // import { useParams, useHistory } from "react-router";
 import { Route, BrowserRouter } from "react-router-dom";
 
@@ -60,17 +60,36 @@ export class App extends Component {
         return (
             <>
                 <BrowserRouter>
-                    <AppBar elevation={0}>
+                    <AppBar elevation={0} sx={{ bgcolor: "salmon" }}>
                         <Toolbar sx={{ height: "15vh" }}>
                             <Logo />
-                            <ProfilePic
-                                url={this.state.profilePic}
-                                firstName={this.state.first}
-                                lastName={this.state.last}
-                                showUploader={this.showUploader}
-                            />
+                            <Grid
+                                container
+                                sx={{
+                                    justifyContent: "end",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    sx={{ height: "50%" }}
+                                >
+                                    {" "}
+                                    Logout{" "}
+                                </Button>
+                                <Avatar
+                                    alt="Example Alt"
+                                    src={this.state.profilePic}
+                                    sx={{
+                                        height: "90px",
+                                        width: "90px",
+                                    }}
+                                />
+                            </Grid>
                         </Toolbar>
                     </AppBar>
+
                     <Route exact path="/">
                         <Profile
                             id={this.state.id}
@@ -85,6 +104,7 @@ export class App extends Component {
                             <BioEditor> </BioEditor>
                         </Profile>
                     </Route>
+                    {/* </Grid> */}
                     {this.state.uploaderVisible && (
                         <Uploader
                             hideUploader={this.hideUploader}
@@ -97,6 +117,7 @@ export class App extends Component {
                     <Route path="/user/:otherUserId">
                         <OtherProfile />
                     </Route>
+                    {/* </Box> */}
                 </BrowserRouter>
             </>
         );

@@ -1,6 +1,15 @@
 import { Component } from "react";
-import { Box, TextField, Grid, Button, Paper } from "@mui/material";
+import {
+    Box,
+    TextField,
+    Grid,
+    Button,
+    Paper,
+    Input,
+    IconButton,
+} from "@mui/material";
 // import CloseIcon from "@mui/icons-material";
+// import CloseIcon from "@mui/icons-material/CloseIcon";
 
 export class Uploader extends Component {
     constructor(props) {
@@ -49,46 +58,82 @@ export class Uploader extends Component {
 
     render() {
         return (
-            <Grid>
+            <Grid
+                container
+                sx={{
+                    position: "fixed",
+                    top: "15vh",
+                    height: "100vh",
+                    backgroundColor: "rgba(255,140,105,0.5)",
+                }}
+            >
+                {" "}
                 <Paper
                     elevation={5}
                     sx={{
                         p: 2,
                         height: "70vh",
                         width: "50vw",
-                        margin: "10vh auto",
+                        margin: "0 auto",
+                        borderRadius: "10px",
+                        position: "relative",
                     }}
                 >
                     <Grid align="center">
                         <Box
                             component="img"
                             src={"./defaultPic.jpeg"}
-                            sx={{ maxWidth: "50%", borderRadius: "50%" }}
+                            sx={{
+                                maxWidth: "50%",
+                                borderRadius: "50%",
+                                marginTop: "20px",
+                            }}
                         ></Box>
                         <Box
                             component="form"
                             onSubmit={this.handleSubmit}
-                            sx={{ width: "50%", px: 4 }}
+                            sx={{ width: "80%" }}
                         >
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                sx={{ margin: "8px 0" }}
-                                onClick={this.handleSubmit}
+                            <Grid
+                                container
+                                spacing={2}
+                                justifyContent="space-evenly"
                             >
-                                {" "}
-                                Upload
-                            </Button>
-                            <TextField
-                                name="profilePic"
-                                type={"file"}
-                                onChange={this.handleChange}
-                            ></TextField>
+                                <Grid item xs={5}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        fullWidth
+                                        sx={{ margin: "8px 0" }}
+                                        onClick={this.handleSubmit}
+                                    >
+                                        {" "}
+                                        Upload
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <TextField
+                                        name="profilePic"
+                                        type={"file"}
+                                        onChange={this.handleChange}
+                                    ></TextField>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Grid>
-                    <p onClick={this.props.hideUploader}> X </p>
+                    <Box
+                        component="p"
+                        onClick={this.props.hideUploader}
+                        sx={{
+                            position: "absolute",
+                            top: "0",
+                            right: "0",
+                            margin: "3px",
+                        }}
+                    >
+                        X
+                    </Box>
                 </Paper>
             </Grid>
         );

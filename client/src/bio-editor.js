@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid, Button, Paper, TextField } from "@mui/material";
 
 export class BioEditor extends Component {
     constructor(props) {
@@ -55,32 +55,33 @@ export class BioEditor extends Component {
     render() {
         return (
             <>
-                <Box sx={{ border: 1 }}>
-                    {this.state.editMode && (
-                        <div>
-                            <textarea
-                                name="bio"
-                                type="text"
-                                defaultValue={this.props.bio}
-                                onChange={this.inputUpdate}
-                            ></textarea>
-                            <button onClick={this.handleSubmit}>
-                                Save Bio
-                            </button>
-                        </div>
-                    )}
-                    {!this.state.editMode && this.props.bio && (
-                        <div>
-                            {this.props.bio}
-                            <button onClick={this.editBio}>Edit Bio</button>
-                        </div>
-                    )}
-                    {!this.state.editMode && !this.props.bio && (
-                        <div>
-                            <button onClick={this.editBio}>Add Bio</button>
-                        </div>
-                    )}
-                </Box>
+                {this.state.editMode && (
+                    <Paper variant="outlined" sx={{ height: "100%" }}>
+                        <TextField
+                            name="bio"
+                            type="text"
+                            defaultValue={this.props.bio}
+                            onChange={this.inputUpdate}
+                        ></TextField>
+
+                        <Button onClick={this.handleSubmit} variant="contained">
+                            Save Bio
+                        </Button>
+                    </Paper>
+                )}
+                {!this.state.editMode && this.props.bio && (
+                    <Paper elevation={0} sx={{ height: "100%" }}>
+                        {this.props.bio}
+                        <Button onClick={this.editBio} variant="contained">
+                            Edit Bio
+                        </Button>
+                    </Paper>
+                )}
+                {!this.state.editMode && !this.props.bio && (
+                    <Button onClick={this.editBio} variant="contained">
+                        Edit Bio
+                    </Button>
+                )}
             </>
         );
     }
