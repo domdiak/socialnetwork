@@ -104,7 +104,6 @@ export class App extends Component {
                             <BioEditor> </BioEditor>
                         </Profile>
                     </Route>
-                    {/* </Grid> */}
                     {this.state.uploaderVisible && (
                         <Uploader
                             hideUploader={this.hideUploader}
@@ -117,7 +116,6 @@ export class App extends Component {
                     <Route path="/user/:otherUserId">
                         <OtherProfile />
                     </Route>
-                    {/* </Box> */}
                 </BrowserRouter>
             </>
         );

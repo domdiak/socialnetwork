@@ -8,5 +8,9 @@ Cosmetic changes:
     --> Disabling Upload button unless a file has been ploaded 
 
 
+
+Things to do: 
+--> Upon loging in redirect to main page
 --> Connect search profiles with other profiles
---> Handle if current users picks the profile 
+
+--> Fix not seeing your own profile 

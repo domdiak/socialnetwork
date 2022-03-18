@@ -109,7 +109,29 @@ module.exports.searchRecentUsers = () => {
     SELECT id, first, last, profilepic
     FROM users
     ORDER BY id DESC
-    LIMIT 3
+    LIMIT 6
     `;
     return db.query(sqlSearchRecentUsers);
 };
+
+module.exports.checkStatus = (senderId, recipientId) => {
+    const sqlCheckStatus = `
+    SELECT accepted_status 
+    FROM friend_connections 
+    WHERE (id_sender = $1
+        AND id_recipient = $2)
+    OR (id_sender = $2
+        AND id_recipient = $1) 
+    `;
+
+    return db.query(sqlCheckStatus, [senderId, recipientId]);
+};
+
+module.exports.sendRequest = (senderId, recipientId) => {
+    const sqlSendRequest = `
+    INSERT INTO friend_connections (id_sender, id_recipient, accepted_status)
+    VALUES ($1, $2, true);
+    `;
+};
+module.exports.acceptRequest = () => {};
+module.exports.cancelRequest = () => {};

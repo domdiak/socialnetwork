@@ -10,7 +10,8 @@ import {
     Paper,
     Avatar,
 } from "@mui/material";
-import { BrowserRouter, Route } from "react-router-dom";
+// import { BrowserRouter, Route } from "react-router-dom";
+// import { useParams, useHistory } from "react-router";
 
 export class Login extends Component {
     constructor() {
@@ -21,6 +22,7 @@ export class Login extends Component {
         this.inputUpdate = this.inputUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+    // const history = useHistory();
     componentDidMount() {
         console.log("Login mounted");
     }
@@ -51,7 +53,7 @@ export class Login extends Component {
             .then((data) => {
                 console.log("resp from POST /login.json", data);
                 if (data.success) {
-                    location.reload();
+                    location.replace("/");
                 } else {
                     this.setState({
                         error: "Wrong password or user doesn't exist",

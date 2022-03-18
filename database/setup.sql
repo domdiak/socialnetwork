@@ -18,3 +18,10 @@ CREATE TABLE users (
     code VARCHAR NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE TABLE friend_connections (
+    id_connection SERIAL PRIMARY KEY,
+    id_sender INT NOT NULL,
+    id_recipient INT NOT NULL,
+    accepted_status BOOLEAN DEFAULT false, 
+  );

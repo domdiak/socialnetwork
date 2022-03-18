@@ -53,6 +53,7 @@ export class Profile extends Component {
                                 <Button
                                     variant="contained"
                                     sx={{ margin: "10px" }}
+                                    onClick={() => location.replace("/find")}
                                 >
                                     {" "}
                                     Search Friends{" "}

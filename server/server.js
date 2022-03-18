@@ -245,12 +245,11 @@ app.get("/users/search", (req, res) => {
 // GET request to show OtherProfile
 
 app.get("/user/:id.json", (req, res) => {
-    const { id } = req.params;
-    const { userId } = req.session;
-    db.getUserInfo(id)
+    const otherProfileId = req.params.id;
+    const loggedUserId = req.session.userId;
+    db.getUserInfo(otherProfileId)
         .then(({ rows }) => {
-            // console.log("Response", rows[0]);
-            if (userId === rows[0].id) {
+            if (loggedUserId === rows[0].otherProfileId) {
                 return res.json({ ownProfile: true });
             } else if (rows[0] === 0) {
                 return res.json({ success: false });
@@ -263,9 +262,26 @@ app.get("/user/:id.json", (req, res) => {
         });
 });
 
+// Friend connection routes ------------------------------
+
+app.get("/friendship/:id.json", (req, res) => {
+    const loggedUserId = req.session.userId;
+    const otherUserId = req.params.id;
+    db.checkStatus(loggedUserId, otherUserId).then(({ rows }) => {
+        // Check if friendship request has ever been made
+        if (rows.length === 0) {
+            return res.json({ requestMade: false });
+        }
+    });
+});
+
+app.post("/friendship-status", (req, res) => {
+    console.log("req.body", req.body);
+});
+
 app.get("/logout", (req, res) => {
     req.session.userId = null;
-    res.redirect("//users/search", (req, res));
+    res.redirect("/");
 });
 
 app.get("*", function (req, res) {

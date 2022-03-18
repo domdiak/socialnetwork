@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AppBar, Toolbar, Grid, Paper } from "@mui/material";
+import { Grid, Paper, Typography, TextField } from "@mui/material";
 
 export function FindPeople() {
     const [users, setUsers] = useState([]);
@@ -25,17 +25,65 @@ export function FindPeople() {
 
     return (
         <>
-            <label> Find Friends</label>
-            <input onChange={handleChange} />
-            <Grid container direction="column" spacing={2}>
-                {users.map((user) => (
-                    <Grid key={user.id} item xs={4}>
-                        <Paper>
-                            {user.first} {user.last}
-                            <img src={user.profilepic}></img>
-                        </Paper>
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    marginTop: "15vh",
+                    justifyContent: "center",
+                    height: "60vh",
+                }}
+            >
+                <Grid
+                    item
+                    xs={3}
+                    sx={{ border: "1px solid black", padding: "5px" }}
+                >
+                    <Typography variant="h4"> Find Friends </Typography>
+                    <TextField
+                        label="Type name"
+                        onChange={handleChange}
+                        fullWidth
+                    ></TextField>
+                </Grid>
+                <Grid item xs={6} sx={{ border: "1px solid black" }}>
+                    <Grid container spacing={2} sx={{ gridAutoRows: "100%" }}>
+                        {users.map((user) => (
+                            <Grid
+                                item
+                                xs={6}
+                                key={user.id}
+                                sx={{ height: "100%" }}
+                            >
+                                <Paper
+                                    elevation={2}
+                                    sx={{ borderRadius: "50px" }}
+                                    onClick={() => {
+                                        location.replace(`/user/${user.id}`);
+                                    }}
+                                >
+                                    <Grid container alignItems="center">
+                                        <img
+                                            style={{
+                                                height: "100px",
+                                                width: "100px",
+                                                borderRadius: "50px",
+                                                objectFit: "cover",
+                                            }}
+                                            src={user.profilepic}
+                                        ></img>
+                                        <Typography
+                                            variant="h6"
+                                            sx={{ padding: "5px" }}
+                                        >
+                                            {user.first} {user.last}
+                                        </Typography>
+                                    </Grid>
+                                </Paper>
+                            </Grid>
+                        ))}
                     </Grid>
-                ))}
+                </Grid>
             </Grid>
         </>
     );
