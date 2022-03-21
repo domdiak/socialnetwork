@@ -271,12 +271,37 @@ app.get("/friendship/:id.json", (req, res) => {
         // Check if friendship request has ever been made
         if (rows.length === 0) {
             return res.json({ requestMade: false });
+        } else {
+            // Returns id_sender, id_recipient, accepted_status
+            return res.json({ rows, requestMade: true });
         }
     });
 });
 
 app.post("/friendship-status", (req, res) => {
-    console.log("req.body", req.body);
+    const { otherUserId, status } = req.body;
+    const loggedUserId = req.session.userId;
+    console.log("Status on clicking:", status);
+    if (status === "noRequest") {
+        db.sendRequest(loggedUserId, otherUserId)
+            .then(({ rows }) => {
+                return res.json({ status: "Request sent" });
+            })
+            .catch((err) => {
+                console.log("Error in sendRequest", err);
+            });
+    }
+    if (status === "cancelRequest") {
+        db.cancelRequest(loggedUserId, otherUserId)
+            .then(({ rows }) => {
+                return res.json({ status: "noRequest" });
+            })
+            .catch((err) => {
+                console.log("Error in cancelRequest", err);
+            });
+    }
+    // if (status === "acceptRequest") {
+    // }
 });
 
 app.get("/logout", (req, res) => {

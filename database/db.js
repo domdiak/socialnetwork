@@ -116,12 +116,12 @@ module.exports.searchRecentUsers = () => {
 
 module.exports.checkStatus = (senderId, recipientId) => {
     const sqlCheckStatus = `
-    SELECT accepted_status 
+    SELECT id_sender, id_recipient, accepted_status 
     FROM friend_connections 
     WHERE (id_sender = $1
         AND id_recipient = $2)
     OR (id_sender = $2
-        AND id_recipient = $1) 
+        AND id_recipient = $1);
     `;
 
     return db.query(sqlCheckStatus, [senderId, recipientId]);
@@ -130,8 +130,17 @@ module.exports.checkStatus = (senderId, recipientId) => {
 module.exports.sendRequest = (senderId, recipientId) => {
     const sqlSendRequest = `
     INSERT INTO friend_connections (id_sender, id_recipient, accepted_status)
-    VALUES ($1, $2, true);
+    VALUES ($1, $2, false);
     `;
+    return db.query(sqlSendRequest, [senderId, recipientId]);
 };
-module.exports.acceptRequest = () => {};
-module.exports.cancelRequest = () => {};
+module.exports.cancelRequest = (senderId, recipientId) => {
+    const sqlCancelRequest = `
+    DELETE FROM friend_connection 
+    WHERE 
+    WHERE (id_sender = $1
+        AND id_recipient = $2)
+    `;
+    return db.query(sqlCancelRequest, [senderId, recipientId]);
+};
+module.exports.acceptRequest = (senderId, recipientId) => {};

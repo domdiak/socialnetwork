@@ -34,7 +34,7 @@ export class App extends Component {
         fetch("/user/data.json")
             .then((res) => res.json())
             .then((userData) => {
-                console.log("userData on mounting:", userData);
+                // console.log("userData on mounting:", userData);
                 this.setState(userData);
             });
     }

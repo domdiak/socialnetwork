@@ -19,7 +19,7 @@ export function OtherProfile() {
         fetch(`/user/${otherUserId}.json`)
             .then((res) => res.json())
             .then((user) => {
-                console.log("Fetch user info:", user);
+                // console.log("Fetch user info:", user);
                 if (!abort) {
                     setUser(user);
                 }
