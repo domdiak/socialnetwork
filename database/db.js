@@ -136,11 +136,31 @@ module.exports.sendRequest = (senderId, recipientId) => {
 };
 module.exports.cancelRequest = (senderId, recipientId) => {
     const sqlCancelRequest = `
-    DELETE FROM friend_connection 
-    WHERE 
+    DELETE FROM friend_connections
     WHERE (id_sender = $1
         AND id_recipient = $2)
     `;
     return db.query(sqlCancelRequest, [senderId, recipientId]);
 };
-module.exports.acceptRequest = (senderId, recipientId) => {};
+module.exports.acceptRequest = (senderId, recipientId) => {
+    const sqlAcceptRequest = `
+    UPDATE friend_connections
+    SET accepted_status = $3
+    WHERE (id_sender = $1
+        AND id_recipient = $2)
+    RETURNING *;
+    `;
+    return db.query(sqlAcceptRequest, [senderId, recipientId, true]);
+};
+
+module.exports.getFriends = (loggedUserId) => {
+    const sqlGetFriends = `
+    SELECT users.id, first, last, profilepic, accepted_status
+    FROM friend_connections
+    JOIN users
+    ON (accepted_status = false AND id_recipient = $1 AND id_sender = users.id)
+    OR (accepted_status = true AND id_recipient = $1 AND id_sender = users.id)
+    OR (accepted_status = true AND id_sender = $1 AND id_recipient = users.id);`;
+
+    return db.query(sqlGetFriends, [loggedUserId]);
+};

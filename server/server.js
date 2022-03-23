@@ -270,10 +270,23 @@ app.get("/friendship/:id.json", (req, res) => {
     db.checkStatus(loggedUserId, otherUserId).then(({ rows }) => {
         // Check if friendship request has ever been made
         if (rows.length === 0) {
-            return res.json({ requestMade: false });
+            // console.log("checkStatus1", rows);
+            // 1 = Send request
+            return res.json({ status: 1 });
+        }
+        if (!rows[0].accepted_status && rows[0].id_sender === loggedUserId) {
+            // console.log("checkStatus2", rows);
+            // 2 = cancel request
+            return res.json({ status: 2 });
+        }
+        if (!rows[0].accepted_status && rows[0].id_recipient === loggedUserId) {
+            // console.log("checkStatus3", rows);
+            // 3 = accept request
+            return res.json({ status: 3 });
         } else {
-            // Returns id_sender, id_recipient, accepted_status
-            return res.json({ rows, requestMade: true });
+            // console.log("checkStatus4", rows);
+            // 4 = accepted
+            return res.json({ status: 4 });
         }
     });
 });
@@ -281,27 +294,66 @@ app.get("/friendship/:id.json", (req, res) => {
 app.post("/friendship-status", (req, res) => {
     const { otherUserId, status } = req.body;
     const loggedUserId = req.session.userId;
-    console.log("Status on clicking:", status);
-    if (status === "noRequest") {
+    // console.log("Status on clicking:", status);
+    if (status === 1) {
         db.sendRequest(loggedUserId, otherUserId)
             .then(({ rows }) => {
-                return res.json({ status: "Request sent" });
+                return res.json({ status: "success" });
             })
             .catch((err) => {
                 console.log("Error in sendRequest", err);
             });
     }
-    if (status === "cancelRequest") {
+    if (status === 2) {
         db.cancelRequest(loggedUserId, otherUserId)
             .then(({ rows }) => {
-                return res.json({ status: "noRequest" });
+                return res.json({ status: "success" });
             })
             .catch((err) => {
                 console.log("Error in cancelRequest", err);
             });
     }
-    // if (status === "acceptRequest") {
-    // }
+    if (status === 3) {
+        db.acceptRequest(otherUserId, loggedUserId)
+            .then(({ rows }) => {
+                return res.json({ status: "success" });
+            })
+            .catch((err) => console.log("Error in acceptRequest", err));
+    }
+});
+
+app.get("/friends-overview.json", (req, res) => {
+    const loggedUserId = req.session.userId;
+    db.getFriends(loggedUserId)
+        .then(({ rows }) => {
+            // console.log("Data from getFriends", rows);
+            return res.json({ rows });
+        })
+        .catch((err) => console.log("Error in getFriends", err));
+});
+
+app.post("/accept-friend", (req, res) => {
+    const { otherUserId } = req.body;
+    const loggedUserId = req.session.userId;
+    db.acceptRequest(otherUserId, loggedUserId)
+        .then(({ rows }) => {
+            // console.log("Results in acceptRequest POST /accept-friend", rows);
+        })
+        .catch((err) => {
+            console.log("Error in acceptRequest on POST /accept-friend", err);
+        });
+});
+
+app.post("/unfriend", (req, res) => {
+    const { otherUserId } = req.body;
+    const loggedUserId = req.session.userId;
+    db.cancelRequest(otherUserId, loggedUserId)
+        .then(({ rows }) => {
+            // console.log("Results in acceptRequest POST /cancel-friend", rows);
+        })
+        .catch((err) => {
+            console.log("Error in acceptRequest on POST /accept-friend", err);
+        });
 });
 
 app.get("/logout", (req, res) => {

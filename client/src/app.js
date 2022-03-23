@@ -6,9 +6,10 @@ import { ProfilePic } from "./profile-pic";
 import { FindPeople } from "./find-people";
 import { BioEditor } from "./bio-editor.js";
 import { OtherProfile } from "./other-profile.js";
+import FriendsOverview from "./friends-overview.js";
 import { AppBar, Toolbar, Avatar, Button, Grid, Box } from "@mui/material";
 // import { useParams, useHistory } from "react-router";
-import { Route, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter, Link } from "react-router-dom";
 
 export class App extends Component {
     constructor() {
@@ -70,14 +71,26 @@ export class App extends Component {
                                     alignItems: "center",
                                 }}
                             >
-                                <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    sx={{ height: "50%" }}
-                                >
-                                    {" "}
-                                    Logout{" "}
-                                </Button>
+                                <Link to="/logout">
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        sx={{ height: "50%" }}
+                                    >
+                                        {" "}
+                                        Logout{" "}
+                                    </Button>
+                                </Link>
+                                <Link to="/friends-overview">
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        sx={{ height: "50%" }}
+                                    >
+                                        {" "}
+                                        Friends{" "}
+                                    </Button>
+                                </Link>
                                 <Avatar
                                     alt="Example Alt"
                                     src={this.state.profilePic}
@@ -115,6 +128,9 @@ export class App extends Component {
                     </Route>
                     <Route path="/user/:otherUserId">
                         <OtherProfile />
+                    </Route>
+                    <Route path="/friends-overview">
+                        <FriendsOverview></FriendsOverview>
                     </Route>
                 </BrowserRouter>
             </>
